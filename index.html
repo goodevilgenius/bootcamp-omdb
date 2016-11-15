@@ -74,7 +74,8 @@
 
                 // Add the movie to the running list
                 $('#movies').append(
-                    '<span class="film btn btn-default btn-sm">' + 
+                    '<span class="film btn btn-default btn-sm">' +
+                    '<i class="glyphicon glyphicon-remove"></i>' +
                     title +
                     '</span>');
                 
@@ -82,6 +83,11 @@
                 return false;
             });
             
+            // Remove movies on click
+            $('#movies').on('click', '.film', function() {
+                $(this).remove();
+            });
+
             var doSearch = function() {
                 // First empty out current results
                 $('table tbody').empty();
