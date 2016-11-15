@@ -72,6 +72,9 @@
             });
             
             var doSearch = function() {
+                // First empty out current results
+                $('table tbody').empty();
+
                 // We'll get all of the titles from #movies
                 $('#movies .film').each(function() {
                     var el = this;
