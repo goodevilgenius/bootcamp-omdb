@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OMDB Example</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    </head>
+<body>
+    <div id="input">
+        <form>
+            <input name="film" />
+        </form>
+        <button type="button" id="searchButton">Search</button>
+    </div>
+    <div id="movies"></div>
+    <table>
+        <thead>
+            <tr>
+                <td>Movie Name</td>
+                <td>Year</td>
+                <td>Actors</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        /* global $*/
+
+        $(document).ready(function() {
+            
+            // This will actually do the AJAX request.
+            var searchOMDB = function(element) {
+                // encodeURIComponent replaces the special characters, like spaces
+                var title = encodeURIComponent($(element).text());
+                
+                // Return our AJAX request.
+                return $.ajax({
+                    url: "https://www.omdbapi.com/?t=" + title,
+                    method: "GET",
+                    dataType: "jsonp"
+                });
+            };
+            
+            // Let's add a listener to the form
+            $('#input form').on('submit', function() {
+                // Get the title
+                var title = $('#input form input').val();
+                console.log(title);
+                // Add the movie to the running list
+                $('#movies').append(
+                    '<span class="film">' + 
+                    title +
+                    '</span>');
+                
+                // Returning false prevents form submission
+                return false;
+            });
+            
+            var doSearch = function() {
+                // We'll get all of the titles from #movies
+                $('#movies .film').each(function() {
+                    var el = this;
+                    
+                    // searchOMDB returns the $.ajax call, so we can do .done with it
+                    searchOMDB(el).done(function(data) {
+
+                        // Let's just store the data here, to remember it
+                        $(el).data('imdb', data);
+                        
+                        // Now, lets add to our table
+                        $('table tbody').append(
+                            '<tr id="' + data.imdbId + '" class="film">' +
+                            '<td>' + data.Title + '</td>' +
+                            '<td>' + data.Year + '</td>' +
+                            '<td>' + data.Actors + '</td></tr>'
+                        );
+                    });
+                });
+            };
+
+            // Listener for the search button
+            $('#searchButton').on('click', doSearch);
+        });
+    </script>
+</body>
+</html>
