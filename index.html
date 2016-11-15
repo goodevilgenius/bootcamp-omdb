@@ -68,7 +68,10 @@
             $('#input form').on('submit', function() {
                 // Get the title
                 var title = $('#input form input').val();
-                console.log(title);
+
+                // Empty it
+                $('#input form input').val('');
+
                 // Add the movie to the running list
                 $('#movies').append(
                     '<span class="film btn btn-default btn-sm">' + 
