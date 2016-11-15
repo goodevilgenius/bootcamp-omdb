@@ -76,10 +76,13 @@
 
                 // Add the movie to the running list
                 $('#movies').append(
-                    '<span class="film btn btn-default btn-sm">' +
+                    '<span class="film btn btn-default btn-sm" data-film="' + title + '">' +
                     '<i class="glyphicon glyphicon-remove"></i>' +
                     title +
                     '</span>');
+
+                // Let's cache the request so that it loads instantaneously
+                searchOMDB($('#movies span[data-film="' + title + '"]').get(0));
                 
                 // Returning false prevents form submission
                 return false;
