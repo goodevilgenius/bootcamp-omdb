@@ -43,17 +43,25 @@
 
         $(document).ready(function() {
             
+            // We can save our searches here, so as not to search again
+            var searches = {};
+            
             // This will actually do the AJAX request.
             var searchOMDB = function(element) {
                 // encodeURIComponent replaces the special characters, like spaces
                 var title = encodeURIComponent($(element).text());
                 
+                // Add AJAX request to searches
+                if (!(title in searches)) {
+                    searches[title] = $.ajax({
+                        url: "https://www.omdbapi.com/?t=" + title,
+                        method: "GET",
+                        dataType: "jsonp"
+                    });
+                }
+                
                 // Return our AJAX request.
-                return $.ajax({
-                    url: "https://www.omdbapi.com/?t=" + title,
-                    method: "GET",
-                    dataType: "jsonp"
-                });
+                return searches[title];
             };
             
             // Let's add a listener to the form
